@@ -3,7 +3,7 @@
 ## 1. Project Initialization
 - [x] Create this `TASKS.md` checklist file.
 - [x] Write this checklist.
-- [ ] Set up version control repository (e.g., GitHub).
+- [x] Set up version control repository (e.g., GitHub).
 - [ ] Initialize project structure (folders for backend, frontend, docs, etc.).
 - [ ] Set up code formatting and linting tools.
 - [ ] Define and document coding standards.
