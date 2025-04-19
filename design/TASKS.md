@@ -1,4 +1,5 @@
 # Tasks required to implement, build, test and deploy the "GoGetAction" application
+This “first‑day” checklist should be used to establish the project structure. It assumes a monorepo living at the root of the Git repository.
 
 ## 1. Project Initialization
 - [x] Create this `TASKS.md` checklist file.
@@ -34,7 +35,7 @@
 - [ ] Scaffold backend project structure.
 - [ ] Implement authentication and authorization.
 - [ ] Implement core business logic modules.
-- [ ] Develop RESTful or GraphQL APIs as per contracts.
+- [ ] Develop RESTful APIs as per contracts.
 - [ ] Integrate with external services/APIs as required.
 - [ ] Implement data validation and error handling.
 - [ ] Write unit and integration tests for backend logic.

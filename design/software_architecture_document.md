@@ -1,45 +1,42 @@
-Software Architecture Document
-==============================
+# Software Architecture Document
 
-1\. Introduction
-----------------
+## 1\. Introduction
 
 This document outlines the comprehensive architecture for a web application built using best practices in web development, deployment, and security. The application leverages Docker containers for isolation, scalability, and portability, with deployment targeted on Google Cloud Platform (GCP) using Google Kubernetes Engine (GKE).
 
 ### Objectives and Constraints:
 
--   Secure, performant, maintainable, and scalable application.
+- Secure, performant, maintainable, and scalable application.
 
--   Compliance with OWASP security standards.
+- Compliance with OWASP security standards.
 
--   Clear separation between development and production environments.
+- Clear separation between development and production environments.
 
--   Leverage existing official Docker images where available.
+- Leverage existing official Docker images where available.
 
--   Robust Identity and Access Management (IAM) using Keycloak.
+- Robust Identity and Access Management (IAM) using Keycloak.
 
 ### Technical Stack Components:
 
--   Frontend: React (TypeScript, Vite)
+- Frontend: React (TypeScript, Vite)
 
--   Backend: Node.js (Express)
+- Backend: Node.js (Express)
 
--   IAM: Keycloak
+- IAM: Keycloak
 
--   Databases: MongoDB, PostgreSQL
+- Databases: MongoDB, PostgreSQL
 
--   PDF Generation: Node.js + PDFKit
+- PDF Generation: Node.js + PDFKit
 
--   Payments: Stripe
+- Payments: Stripe
 
--   Communications: ClickSend, SendGrid (or alternative SMTP)
+- Communications: ClickSend, SendGrid (or alternative SMTP)
 
--   Reverse Proxy: OpenResty (NGINX with enhanced Lua scripting capabilities for Keycloak integration)
+- Reverse Proxy: OpenResty (NGINX with enhanced Lua scripting capabilities for Keycloak integration)
 
-* * * * *
+---
 
-2\. Architectural Overview
---------------------------
+## 2\. Architectural Overview
 
 ### High-Level Architecture
 
@@ -65,30 +62,29 @@ graph TD
 
 ### Component Responsibilities:
 
--   **OpenResty (NGINX)**: Reverse proxy with SSL termination, JWT authentication via Keycloak using enhanced Lua scripting.
+- **OpenResty (NGINX)**: Reverse proxy with SSL termination, JWT authentication via Keycloak using enhanced Lua scripting.
 
--   **React**: Single-page application frontend.
+- **React**: Single-page application frontend.
 
--   **Node.js Express API**: Handles business logic, data management, and backend processes.
+- **Node.js Express API**: Handles business logic, data management, and backend processes.
 
--   **Keycloak**: Identity and access management.
+- **Keycloak**: Identity and access management.
 
--   **MongoDB**: Non-relational data storage.
+- **MongoDB**: Non-relational data storage.
 
--   **PostgreSQL**: Persistent storage for IAM data (Keycloak).
+- **PostgreSQL**: Persistent storage for IAM data (Keycloak).
 
--   **PDF Service**: Generates PDFs from JSON input using PDFKit.
+- **PDF Service**: Generates PDFs from JSON input using PDFKit.
 
--   **Stripe Proxy**: Handles secure payment transactions with Stripe.
+- **Stripe Proxy**: Handles secure payment transactions with Stripe.
 
--   **ClickSend Proxy**: Forwards communication requests to ClickSend API.
+- **ClickSend Proxy**: Forwards communication requests to ClickSend API.
 
--   **Email Service**: Sends email via SMTP (SendGrid or alternative).
+- **Email Service**: Sends email via SMTP (SendGrid or alternative).
 
-* * * * *
+---
 
-3\. Docker Containerization Strategy
-------------------------------------
+## 3\. Docker Containerization Strategy
 
 Each application component will run in its own Docker container using official or custom images based on Alpine Linux whenever possible for enhanced security and efficiency.
 
@@ -153,158 +149,150 @@ services:
 
 Containers are accessible directly during development. In production, access is strictly through OpenResty.
 
-4\. Identity and Access Management (IAM) - Keycloak Integration
----------------------------------------------------------------
+## 4\. Identity and Access Management (IAM) - Keycloak Integration
 
 Keycloak will serve as the Identity and Access Management solution, integrated via JWT tokens handled by OpenResty's Lua scripting and verified by the Node.js backend.
 
 ### Integration Strategy:
 
--   OpenResty configured with Lua middleware to validate JWT tokens from Keycloak.
+- OpenResty configured with Lua middleware to validate JWT tokens from Keycloak.
 
--   JWT tokens issued by Keycloak upon user authentication.
+- JWT tokens issued by Keycloak upon user authentication.
 
--   JWT tokens verified by Node.js Express routes.
+- JWT tokens verified by Node.js Express routes.
 
 ### Keycloak Setup (Production-Grade):
 
--   Hosted in a Docker container using the official production-grade image (`quay.io/keycloak/keycloak:latest`).
+- Hosted in a Docker container using the official production-grade image (`quay.io/keycloak/keycloak:latest`).
 
--   PostgreSQL database for persistent IAM data.
+- PostgreSQL database for persistent IAM data.
 
--   Highly available configurations for reliability.
+- Highly available configurations for reliability.
 
-* * * * *
+---
 
-5\. Frontend and Backend Architectural Considerations
------------------------------------------------------
+## 5\. Frontend and Backend Architectural Considerations
 
 ### Frontend (React):
 
--   Build static assets using Vite (TypeScript).
+- Build static assets using Vite (TypeScript).
 
--   Containerized and served efficiently by OpenResty.
+- Containerized and served efficiently by OpenResty.
 
--   Ensure strict Content Security Policy (CSP) headers via OpenResty.
+- Ensure strict Content Security Policy (CSP) headers via OpenResty.
 
 ### Backend (Node.js Express):
 
--   Implemented using JavaScript and OOP classes where practical.
+- Implemented using JavaScript and OOP classes where practical.
 
--   Structured into routes, controllers, and services.
+- Structured into routes, controllers, and services.
 
--   Adherence to REST API standards.
+- Adherence to REST API standards.
 
--   JWT authentication middleware.
+- JWT authentication middleware.
 
--   OWASP secure coding practices (input validation, secure session management).
+- OWASP secure coding practices (input validation, secure session management).
 
-6\. Security Guidelines (OWASP Standards)
------------------------------------------
+## 6\. Security Guidelines (OWASP Standards)
 
 ### OWASP Top 10 Mitigation Strategies:
 
--   **Injection**: Use parameterized queries, input validation.
+- **Injection**: Use parameterized queries, input validation.
 
--   **Broken Authentication**: Implement Keycloak with strong JWT-based authentication.
+- **Broken Authentication**: Implement Keycloak with strong JWT-based authentication.
 
--   **Sensitive Data Exposure**: Enforce TLS, securely handle secrets using environment variables.
+- **Sensitive Data Exposure**: Enforce TLS, securely handle secrets using environment variables.
 
--   **XML External Entities (XXE)**: Disable XML parsing or securely configure XML parsers.
+- **XML External Entities (XXE)**: Disable XML parsing or securely configure XML parsers.
 
--   **Broken Access Control**: Properly implement JWT roles and permissions.
+- **Broken Access Control**: Properly implement JWT roles and permissions.
 
--   **Security Misconfiguration**: Automate secure configuration via Docker Compose and Kubernetes manifests.
+- **Security Misconfiguration**: Automate secure configuration via Docker Compose and Kubernetes manifests.
 
--   **Cross-Site Scripting (XSS)**: Strict CSP policies, input/output sanitization.
+- **Cross-Site Scripting (XSS)**: Strict CSP policies, input/output sanitization.
 
--   **Insecure Deserialization**: Avoid unsafe deserialization; prefer JSON with validation.
+- **Insecure Deserialization**: Avoid unsafe deserialization; prefer JSON with validation.
 
--   **Components with Known Vulnerabilities**: Regular dependency scanning via Dependabot/Snyk.
+- **Components with Known Vulnerabilities**: Regular dependency scanning via Dependabot/Snyk.
 
--   **Insufficient Logging and Monitoring**: Implement centralized logging and monitoring tools (e.g., Stackdriver, Prometheus/Grafana).
+- **Insufficient Logging and Monitoring**: Implement centralized logging and monitoring tools (e.g., Stackdriver, Prometheus/Grafana).
 
-7\. Environment-Specific Configuration
---------------------------------------
+## 7\. Environment-Specific Configuration
 
--   Clearly separate environment configurations using Docker Compose files and Kubernetes manifests.
+- Clearly separate environment configurations using Docker Compose files and Kubernetes manifests.
 
--   Local development uses self-signed certificates; production environment employs certificate authority (CA)-signed certificates.
+- Local development uses self-signed certificates; production environment employs certificate authority (CA)-signed certificates.
 
--   Environment variables managed through `.env` files for local development and Kubernetes Secrets for GCP deployments.
+- Environment variables managed through `.env` files for local development and Kubernetes Secrets for GCP deployments.
 
-8\. CI/CD Implementation Guidelines
------------------------------------
+## 8\. CI/CD Implementation Guidelines
 
 ### Continuous Integration and Delivery
 
--   Utilize GitHub Actions for automated CI/CD pipelines.
+- Utilize GitHub Actions for automated CI/CD pipelines.
 
--   Automated testing with Jest for frontend and backend.
+- Automated testing with Jest for frontend and backend.
 
--   Automated security scanning with Dependabot and Snyk.
+- Automated security scanning with Dependabot and Snyk.
 
--   Docker image builds automated upon pull requests and merges to `main` branch.
+- Docker image builds automated upon pull requests and merges to `main` branch.
 
 ### GitHub Actions Workflow:
 
--   Code checkout
+- Code checkout
 
--   Run automated tests
+- Run automated tests
 
--   Security scans (Snyk/Dependabot)
+- Security scans (Snyk/Dependabot)
 
--   Docker build and push to Google Container Registry (GCR)
+- Docker build and push to Google Container Registry (GCR)
 
--   Kubernetes deployment automation using Kubernetes manifests or Helm charts
+- Kubernetes deployment automation using Kubernetes manifests or Helm charts
 
-* * * * *
+---
 
-9\. GCP Deployment Strategy
----------------------------
+## 9\. GCP Deployment Strategy
 
 ### Kubernetes Deployment (GKE)
 
--   Google Kubernetes Engine (GKE) clusters for container orchestration.
+- Google Kubernetes Engine (GKE) clusters for container orchestration.
 
--   Use Kubernetes Ingress for external access.
+- Use Kubernetes Ingress for external access.
 
--   SSL termination at ingress (integrated with Cloudflare for CDN and DNS management).
+- SSL termination at ingress (integrated with Cloudflare for CDN and DNS management).
 
 ### Recommended GCP Components:
 
--   Google Container Registry (GCR) for Docker image storage.
+- Google Container Registry (GCR) for Docker image storage.
 
--   Kubernetes Secrets and ConfigMaps for secure configuration management.
+- Kubernetes Secrets and ConfigMaps for secure configuration management.
 
--   Google Cloud Load Balancer or Cloudflare for global traffic management.
+- Google Cloud Load Balancer or Cloudflare for global traffic management.
 
-* * * * *
+---
 
-10\. Operations, Maintenance, and Security Management
------------------------------------------------------
+## 10\. Operations, Maintenance, and Security Management
 
 ### Logging, Monitoring, and Alerting
 
--   Stackdriver Logging for centralized log management.
+- Stackdriver Logging for centralized log management.
 
--   Prometheus and Grafana or Stackdriver Monitoring for infrastructure and application metrics.
+- Prometheus and Grafana or Stackdriver Monitoring for infrastructure and application metrics.
 
--   Alert policies to notify DevOps on anomalies or security incidents.
+- Alert policies to notify DevOps on anomalies or security incidents.
 
 ### Incident Response and Backup Strategy
 
--   Regular backup schedule for databases.
+- Regular backup schedule for databases.
 
--   Disaster recovery plan including snapshot and restore procedures.
+- Disaster recovery plan including snapshot and restore procedures.
 
--   Clearly defined incident response protocols.
+- Clearly defined incident response protocols.
 
 ### Maintenance Practices
 
--   Regular dependency updates and vulnerability management.
+- Regular dependency updates and vulnerability management.
 
--   Scheduled downtime for infrastructure maintenance and updates.
+- Scheduled downtime for infrastructure maintenance and updates.
 
--   Continuous training and knowledge sharing among the team.
-
+- Continuous training and knowledge sharing among the team.
