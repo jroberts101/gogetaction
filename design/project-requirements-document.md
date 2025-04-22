@@ -1213,7 +1213,7 @@ Use code [with caution](https://support.google.com/legal/answer/13505487).
 
 ### 15.1 Development Environment Setup
 
-Establish a consistent, secure, and efficient local development environment, including core tooling, project structure, basic service configurations (via Docker Compose), and initial DX enhancements, ready for feature implementation on the initial-setup branch.
+Please establish a consistent, secure, and efficient local development environment, including core tooling, project structure, basic service configurations (via Docker Compose), and initial DX enhancements, ready for feature implementation on the initial-setup branch. Please use the following table to assist you with determining the tasks involved:
 
 | Task ID | Task Description | Reason for Task | Expected Outcome |
 | ------- | ---------------- | --------------- | ---------------- |
