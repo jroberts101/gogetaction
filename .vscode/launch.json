@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome against localhost",
+      "request": "launch",
+      "type": "chrome",
+      "url": "https://localhost",
+      "webRoot": "${workspaceFolder}/packages/frontend",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/src/*"
+      }
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Backend API",
+      "port": 9229,
+      "restart": true,
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/packages/backend-api",
+      "remoteRoot": "/app"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack: Frontend + Backend",
+      "configurations": ["Launch Chrome against localhost", "Attach to Backend API"]
+    }
+  ]
+}

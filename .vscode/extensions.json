@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "mongodb.mongodb-vscode",
+    "mikestead.dotenv",
+    "eamodio.gitlens",
+    "orta.vscode-jest",
+    "ms-vscode.vscode-typescript-next",
+    "steoates.autoimport",
+    "formulahendry.auto-rename-tag",
+    "mrmlnc.vscode-json5",
+    "christian-kohler.path-intellisense",
+    "yzhang.markdown-all-in-one",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
