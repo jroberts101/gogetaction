@@ -36,4 +36,5 @@ All components are containerized using Docker, with orchestration via Docker Com
 
 ---
 
+See `project-requirements-document.md` for full requirements details.
 See `software_architecture_document.md` for full architectural details.
