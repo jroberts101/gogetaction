@@ -27,7 +27,7 @@ app.use((err, req, res, _next) => {
 });
 
 // Start server
-const PORT = process.env.BACKEND_PORT || 5000;
+const PORT = process.env.BACKEND_PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Backend API server running on port ${PORT}`);
 });

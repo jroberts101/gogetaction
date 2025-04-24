@@ -16,7 +16,7 @@ RUN pnpm install --prod
 COPY src ./src
 
 # Expose the application port
-EXPOSE 5000
+EXPOSE 5001
 
 # Use node user for better security
 USER node
