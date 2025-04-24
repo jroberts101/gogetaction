@@ -312,7 +312,7 @@ The scope includes the design, development, testing, and deployment of:
 
 - **NFR-DX-002:** Configure VS Code debugging (launch.json) for easy step-through debugging of Frontend (browser), Backend API, and potentially other Node.js microservices.
 
-- **NFR-DX-003:** Provide example HTTP request files (_.http or _.rest) for interacting with backend APIs using VS Code REST Client extension (or similar).
+- **NFR-DX-003:** Provide example HTTP request files (`.http` or `.rest`) for interacting with backend APIs using VS Code REST Client extension (or similar).
 
 - **NFR-DX-004:** Implement pre-commit hooks (husky) for linting, formatting, and commit message validation (commitlint).
 
@@ -1229,7 +1229,7 @@ Please establish a consistent, secure, and efficient local development environme
 | 3.6 | **Configure Husky:** Run pnpm husky install (or npx husky install). Run npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'. Run npx husky add .husky/pre-commit 'npx lint-staged'. Ensure hook files are executable (chmod +x .husky/*). | Initializes Husky and creates Git hook scripts (commit-msg, pre-commit) that trigger commitlint and lint-staged respectively. | .husky directory exists with executable commit-msg and pre-commit hook files containing the specified commands. |
 | **4. Core Package Scaffolding** | | | |
 | 4.1 | **Scaffold Frontend Package:** Run pnpx create-vite@latest packages/frontend --template react-ts. cd packages/frontend then pnpm install. cd ../... | Creates the basic React/TypeScript frontend application structure using the Vite template within the monorepo's packages directory. Installs its specific dependencies. | packages/frontend directory exists with Vite/React/TS structure (src, public, index.html, package.json, tsconfig.json, etc.). packages/frontend/node_modules exists. |
-| 4.2 | **Configure Frontend:** Edit packages/frontend/tsconfig.json. | Adds path aliases (e.g., @/*) for cleaner imports within the frontend codebase. | compilerOptions in tsconfig.json includes "baseUrl": "." and "paths": { "@/_": ["src/_"] }. |
+| 4.2 | **Configure Frontend:** Edit packages/frontend/tsconfig.json. | Adds path aliases (e.g., @/*) for cleaner imports within the frontend codebase. | compilerOptions in tsconfig.json includes "baseUrl": "." and "paths": { "@/*": ["src/_"] }. |
 | 4.3 | **Install Frontend Core Libs:** cd packages/frontend. Run pnpm add react-router-dom @mui/material @emotion/react @emotion/styled @mui/icons-material keycloak-js. cd ../... | Installs essential libraries for routing, UI components (Material UI), and Keycloak OIDC integration into the frontend package. | Dependencies are added to packages/frontend/package.json and installed in packages/frontend/node_modules. |
 | 4.4 | **Scaffold Backend API Package:** Run mkdir packages/backend-api. cd packages/backend-api. Run pnpm init -y. cd ../... | Creates the directory and initial package.json for the main backend API service within the monorepo. | packages/backend-api directory exists with a basic package.json. |
 | 4.5 | **Install Backend Core Libs:** cd packages/backend-api. Run pnpm add express cors dotenv mongoose axios jsonwebtoken jwks-rsa. Run pnpm add -D nodemon. cd ../... | Installs essential libraries for the Express web server, CORS handling, environment variables, MongoDB interaction (Mongoose), HTTP calls (Axios), JWT validation, and development auto-restarts (nodemon). | Dependencies are added to packages/backend-api/package.json and installed. |
