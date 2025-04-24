@@ -7,26 +7,26 @@ WORKDIR /app
 # Install pnpm globally
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy package.json and related files
-COPY package.json pnpm-lock.yaml* ./
+# Copy package files first for better caching
+COPY package.json ./
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install dependencies including devDependencies needed for build
+RUN pnpm install --frozen-lockfile=false
+
+# Make sure TypeScript is installed and available
+RUN ls -la node_modules/.bin/
 
 # Copy the rest of the application code
 COPY . .
 
 # Build the application
-RUN pnpm build
+RUN node_modules/.bin/tsc -b && node_modules/.bin/vite build
 
 # Production stage
 FROM nginx:alpine AS production
 
 # Copy built files from the build stage to NGINX html directory
 COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy custom nginx config (if exists)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80

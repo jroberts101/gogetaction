@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # NGINX for routing requests
   nginx:
@@ -18,13 +16,11 @@ services:
 
   # Frontend - Vite dev server
   frontend:
-    build:
-      context: ./packages/frontend
-      target: build
-    command: pnpm dev
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
     volumes:
       - ./packages/frontend:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=development
       - VITE_BACKEND_URL=${VITE_BACKEND_URL}
