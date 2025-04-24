@@ -826,7 +826,7 @@ Use code [with caution](https://support.google.com/legal/answer/13505487).
 
   - **E2E Tests (Playwright):** Configuration to run Playwright tests with debugging enabled.
 
-### 9.6 REST Client Examples (_.http / _.rest)
+### 9.6 REST Client Examples (*.http / *.rest)
 
 - **Requirement:** Provide example requests for common backend API endpoints.
 
@@ -946,7 +946,7 @@ Use code [with caution](https://support.google.com/legal/answer/13505487).
     # Add other microservice-specific variables as needed
     ```
 
-- **Frontend Access:** Frontend code (Vite) can only access environment variables prefixed with VITE_. These are embedded during the build process and are **publicly visible**. Do not put secrets here.
+- **Frontend Access:** Frontend code (Vite) can only access environment variables prefixed with `VITE_`. These are embedded during the build process and are **publicly visible**. Do not put secrets here.
 
 ### 11.3 Staging/Production (Kubernetes)
 
@@ -1218,7 +1218,7 @@ Please establish a consistent, secure, and efficient local development environme
 | 2.4 | **Create Root:** Run pnpm init -y (or create manually). Edit the file. | Initializes the project root as a Node.js package, required for managing root-level dev dependencies and pnpm workspaces. | package.json file exists at the root. Set "private": true. Remove "main": "index.js". Add basic info (name, version 0.1.0). |
 | 2.5 | **Create:** Create the file pnpm-workspace.yaml at the root. | Defines the locations of the individual packages within the monorepo for pnpm. | pnpm-workspace.yaml file exists with content like: packages:\n - 'packages/*' |
 | 2.6 | **Create Core Directories:** Run mkdir packages scripts docs infra certs .github .vscode. | Establishes the fundamental directory structure outlined in the PRD for organizing code, configs, scripts, and infrastructure manifests. | Directories packages, scripts, docs, infra, certs, .github, .vscode exist at the project root. |
-| 2.7 | **Create:** Create a .gitignore file at the root. | Prevents committing sensitive or unnecessary files/directories (.env, node_modules, build artifacts, OS files, certs, etc.) to version control. | .gitignore file exists. Add common Node/OS ignores, plus .env, node_modules/, dist/, build/, coverage/, certs/_.pem, .DS_Store, _.log. |
+| 2.7 | **Create:** Create a .gitignore file at the root. | Prevents committing sensitive or unnecessary files/directories (.env, node_modules, build artifacts, OS files, certs, etc.) to version control. | .gitignore file exists. Add common Node/OS ignores, plus .env, node_modules/, dist/, build/, coverage/, certs/*.pem, .DS_Store, *.log. |
 | 2.8 | **Create:** Create a .editorconfig file at the root. | Defines basic coding styles (indentation, line endings) enforced across different editors/IDEs. | .editorconfig file exists with project standards (e.g., indent_style = space, indent_size = 2, end_of_line = lf, charset = utf-8). |
 | **3. Root Tooling Installation & Configuration** | | | |
 | 3.1 | **Install Root Dev Dependencies:** Run pnpm add -D -w typescript eslint prettier eslint-config-prettier eslint-plugin-prettier husky lint-staged @commitlint/cli @commitlint/config-conventional conventional-changelog-cli concurrently nodemon @types/node. | Installs essential development tools at the root level (-w flag) needed for linting, formatting, Git hooks, commit conventions, and running services. | Dependencies are added to devDependencies in the root package.json and installed in the root node_modules. pnpm-lock.yaml is updated. |
