@@ -1,0 +1,37 @@
+{
+  "name": "gogetaction",
+  "version": "0.1.0",
+  "description": "GoGetAction - A campaign management platform",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "commit": "git-cz"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "devDependencies": {
+    "@commitlint/cli": "19.8.0",
+    "@commitlint/config-conventional": "19.8.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.25.1",
+    "@types/node": "22.14.1",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "concurrently": "9.1.2",
+    "conventional-changelog-cli": "5.0.0",
+    "eslint": "9.25.1",
+    "eslint-config-prettier": "10.1.2",
+    "eslint-plugin-prettier": "5.2.6",
+    "globals": "^16.0.0",
+    "husky": "9.1.7",
+    "lint-staged": "15.5.1",
+    "nodemon": "^3.1.9",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3"
+  }
+}

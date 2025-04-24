@@ -1,0 +1,25 @@
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install pnpm globally
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy package files
+COPY package.json ./
+
+# Install production dependencies only
+RUN pnpm install --prod
+
+# Copy source code
+COPY src ./src
+
+# Expose the application port
+EXPOSE 5001
+
+# Use node user for better security
+USER node
+
+# Start the application
+CMD ["node", "src/server.js"]
