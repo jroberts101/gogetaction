@@ -27,17 +27,27 @@ if [ ! -f "$CERT_DIR/localhost.pem" ] || [ ! -f "$CERT_DIR/localhost-key.pem" ];
   echo -e "${YELLOW}⚠️  Local TLS certificates not found. Generating...${NC}"
   
   # Check if mkcert is installed
-  if ! command -v mkcert &> /dev/null; then
-    echo -e "${RED}✗ mkcert is not installed. Please install it first:${NC}"
-    echo -e "   brew install mkcert"
-    echo -e "   mkcert -install"
-    exit 1
+  if command -v mkcert &> /dev/null; then
+    # Generate certificates without installing CA
+    mkdir -p "$CERT_DIR"
+    mkcert -cert-file "$CERT_DIR/localhost.pem" -key-file "$CERT_DIR/localhost-key.pem" localhost 127.0.0.1 ::1
+    echo -e "${GREEN}✓ TLS certificates generated${NC}"
+    echo -e "${YELLOW}⚠️  Note: Your browser will show security warnings as these are self-signed certificates${NC}"
+  else
+    # Fallback to OpenSSL if mkcert isn't installed
+    if command -v openssl &> /dev/null; then
+      echo -e "${YELLOW}mkcert not found, using OpenSSL instead...${NC}"
+      mkdir -p "$CERT_DIR"
+      openssl genrsa -out "$CERT_DIR/localhost-key.pem" 2048
+      openssl req -new -x509 -key "$CERT_DIR/localhost-key.pem" -out "$CERT_DIR/localhost.pem" -days 365 -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost,IP:127.0.0.1,IP:::1"
+      echo -e "${GREEN}✓ Self-signed certificates generated with OpenSSL${NC}"
+      echo -e "${YELLOW}⚠️  Your browser will show security warnings as these are self-signed certificates${NC}"
+    else
+      echo -e "${RED}✗ Neither mkcert nor openssl is installed. Please install one of them:${NC}"
+      echo -e "   brew install openssl"
+      exit 1
+    fi
   fi
-  
-  # Generate certificates
-  mkdir -p "$CERT_DIR"
-  mkcert -key-file "$CERT_DIR/localhost-key.pem" -cert-file "$CERT_DIR/localhost.pem" localhost 127.0.0.1 ::1
-  echo -e "${GREEN}✓ TLS certificates generated${NC}"
 else
   echo -e "${GREEN}✓ TLS certificates found${NC}"
 fi
@@ -55,3 +65,5 @@ echo -e "\n${GREEN}=== Local Development Environment is Ready! ===${NC}"
 echo -e "Frontend:  ${BLUE}https://localhost${NC}"
 echo -e "API:       ${BLUE}https://localhost/api/health${NC}"
 echo -e "Keycloak:  ${BLUE}http://localhost:8080${NC} (admin:${YELLOW}see KEYCLOAK_ADMIN_PASSWORD in .env${NC})"
+echo -e "\n${YELLOW}Note: Your browser will show security warnings when accessing HTTPS URLs${NC}"
+echo -e "${YELLOW}This is normal with self-signed certificates. You can safely proceed by clicking through the warnings.${NC}"
