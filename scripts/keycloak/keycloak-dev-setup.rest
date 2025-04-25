@@ -1,0 +1,351 @@
+# NOTE: Make sure to select "keycloak-dev" from the REST Client environment selector 
+# in VS Code's status bar before running these requests
+
+### DEBUG: Check Variable Values (Run this first!)
+# This request will verify if your environment variables are loading correctly
+GET {{keycloakHost}}
+Content-Type: text/plain
+
+### STEP 1.1: Get Admin Access Token
+# @name getAdminToken
+# Accept: application/json
+POST {{keycloakHost}}/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=admin-cli&username={{adminUser}}&password={{adminPassword}}
+
+### Set admin token variable for subsequent requests
+@adminToken = {{getAdminToken.response.body.access_token}}
+
+### STEP 1.2: Increase Master Realm Token Lifespan
+# This will increase the admin token lifespan to 300 seconds (5 minutes)
+PUT {{keycloakHost}}/admin/realms/master
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "realm": "master",
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "accessTokenLifespanForImplicitFlow": 900
+}
+
+### STEP 1.3: Verify Master Realm Token Settings
+# @name verifyMasterRealmSettings
+GET {{keycloakHost}}/admin/realms/master
+Authorization: Bearer {{adminToken}}
+
+### STEP 2.1: Check if realm exists first
+# @name checkRealmExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}
+Authorization: Bearer {{adminToken}}
+
+### STEP 2.2: Create New Realm (KC-REALM-001) - Run this manually if previous request returned 404
+POST {{keycloakHost}}/admin/realms
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "realm": "{{realmName}}",
+  "enabled": true,
+  "displayName": "Go Get Action",
+  "displayNameHtml": "<div class=\"kc-logo-text\">Go Get Action</div>"
+}
+
+### STEP 3: Configure Realm Settings (KC-REALM-002)
+PUT {{keycloakHost}}/admin/realms/{{realmName}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "realm": "{{realmName}}",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "editUsernameAllowed": false,
+  "resetPasswordAllowed": true,
+  "bruteForceProtected": true,
+  "failureFactor": 3,
+  "refreshTokenMaxReuse": 0,
+  "accessTokenLifespan": 300,
+  "accessTokenLifespanForImplicitFlow": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "offlineSessionIdleTimeout": 2592000,
+  "accessCodeLifespan": 60,
+  "accessCodeLifespanLogin": 1800,
+  "accessCodeLifespanUserAction": 300,
+  "attributes": {
+    "pkceCodeChallengeMethod": "S256"
+  }
+}
+
+### STEP 4.1: Check if frontend client exists
+# @name checkFrontendClientExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/clients?clientId={{frontendClientId}}
+Authorization: Bearer {{adminToken}}
+
+### STEP 4.2: Create Frontend Client (KC-REALM-003) - Run this manually if previous request returned empty array
+# @name createFrontendClient
+POST {{keycloakHost}}/admin/realms/{{realmName}}/clients
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "clientId": "{{frontendClientId}}",
+  "enabled": true,
+  "publicClient": true,
+  "redirectUris": ["https://localhost/*"],
+  "webOrigins": ["+"],
+  "standardFlowEnabled": true,
+  "directAccessGrantsEnabled": false,
+  "attributes": {
+    "pkce.code.challenge.method": "S256"
+  }
+}
+
+### STEP 5.1: Check if backend client exists
+# @name checkBackendClientExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/clients?clientId={{backendClientId}}
+Authorization: Bearer {{adminToken}}
+
+### STEP 5.2: Create Backend Client (KC-REALM-005) - Run this manually if previous request returned empty array
+POST {{keycloakHost}}/admin/realms/{{realmName}}/clients
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "clientId": "{{backendClientId}}",
+  "enabled": true,
+  "bearerOnly": true,
+  "publicClient": false
+}
+
+### STEP 6.1: Check if Campaigner role exists
+# @name checkCampaignerRoleExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/roles/Campaigner
+Authorization: Bearer {{adminToken}}
+
+### STEP 6.2: Create Campaigner Role (KC-REALM-006) - Run this manually if previous request returned 404
+POST {{keycloakHost}}/admin/realms/{{realmName}}/roles
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Campaigner",
+  "description": "Can create and manage campaigns"
+}
+
+### STEP 7.1: Check if regular test user exists
+# @name checkRegularUserExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/users?username=testuser&exact=true
+Authorization: Bearer {{adminToken}}
+
+### STEP 7.2: Create Regular Test User - Run this manually if previous request returned empty array
+# @name createRegularUser
+POST {{keycloakHost}}/admin/realms/{{realmName}}/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "testuser@example.com",
+  "enabled": true,
+  "emailVerified": true,
+  "credentials": [
+    {
+      "type": "password",
+      "value": "password123",
+      "temporary": false
+    }
+  ]
+}
+
+### STEP 8.1: Check if campaigner test user exists
+# @name checkCampaignerUserExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/users?username=campaigner&exact=true
+Authorization: Bearer {{adminToken}}
+
+### STEP 8.2: Create Campaigner Test User - Run this manually if previous request returned empty array
+# @name createCampaignerUser
+POST {{keycloakHost}}/admin/realms/{{realmName}}/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "username": "campaigner",
+  "email": "campaigner@example.com",
+  "enabled": true,
+  "emailVerified": true,
+  "credentials": [
+    {
+      "type": "password",
+      "value": "password123",
+      "temporary": false
+    }
+  ]
+}
+
+### STEP 9.1: Get Campaigner Role ID
+# Make sure you've run STEP 6.2 first to create the role
+# @name getCampaignerRole
+GET {{keycloakHost}}/admin/realms/{{realmName}}/roles/Campaigner
+Authorization: Bearer {{adminToken}}
+
+### STEP 9.2: Get Campaigner User ID
+# Make sure you've run STEP 8.2 first to create the user
+# @name getCampaignerUser
+GET {{keycloakHost}}/admin/realms/{{realmName}}/users?username=campaigner&exact=true
+Authorization: Bearer {{adminToken}}
+
+### STEP 10: Assign Campaigner Role to User (KC-REALM-007)
+# This step uses the responses from both 9.1 and 9.2
+POST {{keycloakHost}}/admin/realms/{{realmName}}/users/{{getCampaignerUser.response.body.0.id}}/role-mappings/realm
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+[
+  {
+    "id": "{{getCampaignerRole.response.body.id}}",
+    "name": "Campaigner"
+  }
+]
+
+### STEP 11.1: Check if Facebook Identity Provider exists
+# @name checkFacebookIdpExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/identity-provider/instances/facebook
+Authorization: Bearer {{adminToken}}
+
+### STEP 11.2: Configure Facebook Identity Provider (KC-REALM-008, part 1) - Run this manually if previous request returned 404
+POST {{keycloakHost}}/admin/realms/{{realmName}}/identity-provider/instances
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "alias": "facebook",
+  "displayName": "Facebook",
+  "providerId": "facebook",
+  "enabled": true,
+  "storeToken": false,
+  "addReadTokenRoleOnCreate": false,
+  "authenticateByDefault": false,
+  "firstBrokerLoginFlowAlias": "first broker login",
+  "config": {
+    "clientId": "YOUR_FACEBOOK_APP_ID",
+    "clientSecret": "YOUR_FACEBOOK_APP_SECRET"
+  }
+}
+
+### STEP 12.1: Check if Instagram Identity Provider exists
+# @name checkInstagramIdpExists
+GET {{keycloakHost}}/admin/realms/{{realmName}}/identity-provider/instances/instagram
+Authorization: Bearer {{adminToken}}
+
+### STEP 12.2: Configure Instagram Identity Provider (KC-REALM-008, part 2) - Run this manually if previous request returned 404
+POST {{keycloakHost}}/admin/realms/{{realmName}}/identity-provider/instances
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "alias": "instagram",
+  "displayName": "Instagram",
+  "providerId": "instagram",
+  "enabled": true,
+  "storeToken": false,
+  "addReadTokenRoleOnCreate": false,
+  "authenticateByDefault": false,
+  "firstBrokerLoginFlowAlias": "first broker login",
+  "config": {
+    "clientId": "YOUR_INSTAGRAM_APP_ID",
+    "clientSecret": "YOUR_INSTAGRAM_APP_SECRET"
+  }
+}
+
+### ================================================================================================
+### IMPORT REALM FROM EXPORT FILE
+### ========================
+
+### ROLLBACK Step 1: Get Admin Access Token (if you don't already have one)
+# @name importGetAdminToken
+# Accept: application/json
+POST {{keycloakHost}}/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=admin-cli&username={{adminUser}}&password={{adminPassword}}
+
+### Set admin token variable for import requests
+@importAdminToken = {{importGetAdminToken.response.body.access_token}}
+
+### IMPORT STEP 2: Import Realm from Export File
+# This will completely replace the realm with the configuration from your export file
+# Note: You must have admin permissions to import a realm
+POST {{keycloakHost}}/admin/realms
+Authorization: Bearer {{importAdminToken}}
+Content-Type: application/json
+
+< ./scripts/keycloak/gogetaction-keycloak-realm-export.json
+
+### ================================================================================================
+### ROLLBACK STEPS
+### ========================
+### These steps will allow you to rollback your Keycloak configuration to its initial state
+
+### ROLLBACK Step 1: Get Admin Access Token (if you don't already have one)
+# @name rollbackGetAdminToken
+# Accept: application/json
+POST {{keycloakHost}}/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=admin-cli&username={{adminUser}}&password={{adminPassword}}
+
+### Set admin token variable for rollback requests
+@rollbackAdminToken = {{rollbackGetAdminToken.response.body.access_token}}
+
+### ROLLBACK Step 2: Delete Identity Providers
+# Delete Instagram Identity Provider
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/identity-provider/instances/instagram
+Authorization: Bearer {{rollbackAdminToken}}
+
+# Delete Facebook Identity Provider
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/identity-provider/instances/facebook
+Authorization: Bearer {{rollbackAdminToken}}
+
+### ROLLBACK Step 3: Get Users (to find IDs for deletion)
+# @name rollbackListUsers
+GET {{keycloakHost}}/admin/realms/{{realmName}}/users
+Authorization: Bearer {{rollbackAdminToken}}
+
+### ROLLBACK Step 4: Delete Users (run these manually after checking IDs from List Users response)
+# Copy the user IDs from the response of the previous request and replace USER_ID_1, USER_ID_2, etc.
+# @name rollbackDeleteUser1
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/users/USER_ID_1
+Authorization: Bearer {{rollbackAdminToken}}
+
+# @name rollbackDeleteUser2
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/users/USER_ID_2
+Authorization: Bearer {{rollbackAdminToken}}
+
+### ROLLBACK Step 5: Delete Roles
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/roles/Campaigner
+Authorization: Bearer {{rollbackAdminToken}}
+
+### ROLLBACK Step 6: Get Clients (to find IDs for deletion)
+# @name rollbackListClients
+GET {{keycloakHost}}/admin/realms/{{realmName}}/clients
+Authorization: Bearer {{rollbackAdminToken}}
+
+### ROLLBACK Step 7: Delete Clients (run these manually after checking IDs from List Clients response)
+# Copy the client IDs from the response of the previous request and replace CLIENT_ID_1, CLIENT_ID_2, etc.
+# @name rollbackDeleteClient1
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/clients/CLIENT_ID_1
+Authorization: Bearer {{rollbackAdminToken}}
+
+# @name rollbackDeleteClient2
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}/clients/CLIENT_ID_2
+Authorization: Bearer {{rollbackAdminToken}}
+
+### ROLLBACK Step 8: Delete Realm (THIS IS DESTRUCTIVE - WILL DELETE EVERYTHING IN THE REALM)
+# This is the nuclear option - it will delete the entire realm and everything in it
+DELETE {{keycloakHost}}/admin/realms/{{realmName}}
+Authorization: Bearer {{rollbackAdminToken}}

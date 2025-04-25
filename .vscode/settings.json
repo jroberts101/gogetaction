@@ -33,5 +33,15 @@
     "**/dist": true,
     "**/build": true,
     "**/coverage": true
+  },
+  "rest-client.environmentVariables": {
+    "keycloak-dev": {
+      "keycloakHost": "http://localhost:8080",
+      "adminUser": "admin",
+      "adminPassword": "admin123",
+      "realmName": "gogetaction",
+      "frontendClientId": "frontend",
+      "backendClientId": "backend-api"
+    }
   }
 }
