@@ -53,6 +53,21 @@ Content-Type: application/json
   "displayNameHtml": "<div class=\"kc-logo-text\">Go Get Action</div>"
 }
 
+### STEP 2.3: Configure Realm Email Settings
+PUT {{keycloakHost}}/admin/realms/{{realmName}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "realm": "{{realmName}}",
+  "smtpServer": {
+    "from": "no-reply@gogetaction.com",
+    "fromDisplayName": "Go Get Action",
+    "host": "mailpit",
+    "port": "1025"
+  }
+}
+
 ### STEP 3: Configure Realm Settings (KC-REALM-002)
 PUT {{keycloakHost}}/admin/realms/{{realmName}}
 Authorization: Bearer {{adminToken}}
