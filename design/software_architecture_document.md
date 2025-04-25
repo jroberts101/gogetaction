@@ -1,6 +1,6 @@
 # Software Architecture Document
 
-## 1\. Introduction
+## 1. Introduction
 
 This document outlines the comprehensive architecture for a web application built using best practices in web development, deployment, and security. The application leverages Docker containers for isolation, scalability, and portability, with deployment targeted on Google Cloud Platform (GCP) using Google Kubernetes Engine (GKE).
 
@@ -36,7 +36,7 @@ This document outlines the comprehensive architecture for a web application buil
 
 ---
 
-## 2\. Architectural Overview
+## 2. Architectural Overview
 
 ### High-Level Architecture
 
@@ -84,7 +84,7 @@ graph TD
 
 ---
 
-## 3\. Docker Containerization Strategy
+## 3. Docker Containerization Strategy
 
 Each application component will run in its own Docker container using official or custom images based on Alpine Linux whenever possible for enhanced security and efficiency.
 
@@ -149,7 +149,7 @@ services:
 
 Containers are accessible directly during development. In production, access is strictly through OpenResty.
 
-## 4\. Identity and Access Management (IAM) - Keycloak Integration
+## 4. Identity and Access Management (IAM) - Keycloak Integration
 
 Keycloak will serve as the Identity and Access Management solution, integrated via JWT tokens handled by OpenResty's Lua scripting and verified by the Node.js backend.
 
@@ -171,7 +171,7 @@ Keycloak will serve as the Identity and Access Management solution, integrated v
 
 ---
 
-## 5\. Frontend and Backend Architectural Considerations
+## 5. Frontend and Backend Architectural Considerations
 
 ### Frontend (React):
 
@@ -193,7 +193,7 @@ Keycloak will serve as the Identity and Access Management solution, integrated v
 
 - OWASP secure coding practices (input validation, secure session management).
 
-## 6\. Security Guidelines (OWASP Standards)
+## 6. Security Guidelines (OWASP Standards)
 
 ### OWASP Top 10 Mitigation Strategies:
 
@@ -217,7 +217,7 @@ Keycloak will serve as the Identity and Access Management solution, integrated v
 
 - **Insufficient Logging and Monitoring**: Implement centralized logging and monitoring tools (e.g., Stackdriver, Prometheus/Grafana).
 
-## 7\. Environment-Specific Configuration
+## 7. Environment-Specific Configuration
 
 - Clearly separate environment configurations using Docker Compose files and Kubernetes manifests.
 
@@ -225,7 +225,7 @@ Keycloak will serve as the Identity and Access Management solution, integrated v
 
 - Environment variables managed through `.env` files for local development and Kubernetes Secrets for GCP deployments.
 
-## 8\. CI/CD Implementation Guidelines
+## 8. CI/CD Implementation Guidelines
 
 ### Continuous Integration and Delivery
 
@@ -251,7 +251,7 @@ Keycloak will serve as the Identity and Access Management solution, integrated v
 
 ---
 
-## 9\. GCP Deployment Strategy
+## 9. GCP Deployment Strategy
 
 ### Kubernetes Deployment (GKE)
 
@@ -271,7 +271,7 @@ Keycloak will serve as the Identity and Access Management solution, integrated v
 
 ---
 
-## 10\. Operations, Maintenance, and Security Management
+## 10. Operations, Maintenance, and Security Management
 
 ### Logging, Monitoring, and Alerting
 
