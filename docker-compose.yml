@@ -48,6 +48,23 @@ services:
     networks:
       - gogetaction
 
+  # Email testing service
+  mailpit:
+    image: axllent/mailpit:v1.24
+    container_name: mailpit
+    restart: unless-stopped
+    ports:
+      - '1025:1025' # SMTP port
+      - '8025:8025' # Web UI port
+    environment:
+      - MP_SMTP_AUTH_ACCEPT_ANY=1 # Accept any SMTP auth (useful for testing)
+      - MP_SMTP_AUTH_ALLOW_INSECURE=1 # Allow insecure auth for dev
+      - TZ=UTC
+    volumes:
+      - mailpit_data:/data
+    networks:
+      - gogetaction
+
   # Keycloak - Identity and Access Management
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -93,3 +110,4 @@ networks:
 volumes:
   postgres_data:
   mongo_data:
+  mailpit_data:
