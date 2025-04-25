@@ -4,4 +4,6 @@ build/
 coverage/
 pnpm-lock.yaml
 .github/
+.husky
 certs/
+design/
