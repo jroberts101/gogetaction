@@ -19,7 +19,7 @@ services:
     image: node:20-alpine
     working_dir: /app
     ports:
-      - '5173:5173' # Expose Vite dev server port
+      - '5173:5173' # Changed back to the default Vite port 5173
     command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm exec vite --host 0.0.0.0"
     volumes:
       - ./packages/frontend:/app
