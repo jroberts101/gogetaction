@@ -798,17 +798,17 @@ Use code [with caution](https://support.google.com/legal/answer/13505487).
 
 ### 9.4 Tooling & Configuration
 
-- **EditorConfig (** Define basic coding style rules (indentation, line endings).
+- **EditorConfig:** Define basic coding style rules (indentation, line endings).
 
-- **Prettier (** Configure code formatting rules. Integrate with ESLint (eslint-config-prettier).
+- **Prettier:** Configure code formatting rules. Integrate with ESLint (eslint-config-prettier).
 
-- **ESLint (** Configure linting rules for TypeScript (frontend) and JavaScript (backend). Use relevant plugins (React, TypeScript, Node).
+- **ESLint:** Configure linting rules for TypeScript (frontend) and JavaScript (backend). Use relevant plugins (React, TypeScript, Node).
 
-- **Husky + lint-staged (** Configure pre-commit hooks to run linters, formatters, and potentially tests on staged files.
+- **Husky + lint-staged:** Configure pre-commit hooks to run linters, formatters, and potentially tests on staged files.
 
-- **Commitlint (** Configure rules to enforce Conventional Commits format using Husky commit-msg hook.
+- **Commitlint:** Configure rules to enforce Conventional Commits format using Husky commit-msg hook.
 
-- **VS Code (** Recommend extensions (ESLint, Prettier, Docker, Remote-Containers, Playwright, REST Client), configure format-on-save.
+- **VS Code:** Recommend extensions (ESLint, Prettier, Docker, Remote-Containers, Playwright, REST Client), configure format-on-save.
 
 - **PNPM:** Use pnpm for all package management commands within the monorepo.
 
