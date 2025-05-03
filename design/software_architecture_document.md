@@ -4,6 +4,14 @@
 
 This document outlines the comprehensive architecture for a web application built using best practices in web development, deployment, and security. The application leverages Docker containers for isolation, scalability, and portability, with deployment targeted on Google Cloud Platform (GCP) using Google Kubernetes Engine (GKE).
 
+### Application Purpose
+
+GoGetAction is a GoFundMe-inspired advocacy campaign platform that enables two key user flows:
+1. **Campaign Creation**: Registered "Campaigners" can create advocacy campaigns (requiring payment) and design letter templates for their causes
+2. **Letter Sending**: General users (anonymous or registered) can browse campaigns, select letter templates, provide recipient details, and pay to have physical letters mailed through ClickSend's postal service
+
+The platform facilitates connecting campaign creators with supporters who want to send physical advocacy letters to various recipients, handling the entire process from campaign creation to payment processing to physical letter delivery.
+
 ### Objectives and Constraints:
 
 - Secure, performant, maintainable, and scalable application.
