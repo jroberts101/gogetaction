@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" fill="transparent"/>
+  <g fill="#0FA0CE">
+    <!-- Envelope base -->
+    <rect x="80" y="120" width="240" height="160" rx="20" ry="20" stroke="#0FA0CE" stroke-width="8" fill="none"/>
+    
+    <!-- Envelope flap -->
+    <!-- <path d="M80 120 L200 240 L320 120" stroke="#0FA0CE" stroke-width="8" fill="none"/> -->
+    
+    <!-- Upward Arrow -->
+    <path d="M120 140 L200 220 L280 140" stroke="#0FA0CE" stroke-width="12" stroke-dasharray="30,10" fill="none"/>
+    <polygon points="270,110 330,130 290,170" fill="#0FA0CE"/>
+    
+    <!-- Text GoGetAction -->
+    <text x="200" y="340" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#0FA0CE">GoGetAction</text>
+  </g>
+</svg>
+<!-- This SVG logo features a stylized envelope with an upward arrow, representing the action of sending or receiving messages. The text "GoGetAction" is included below the envelope in a bold font. The color scheme is a single shade of blue (#0FA0CE) for simplicity and clarity. -->
