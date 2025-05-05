@@ -1,0 +1,13 @@
+{
+  "name": "keycloak-setup",
+  "version": "1.0.0",
+  "description": "Script to configure Keycloak for gogetaction project",
+  "main": "keycloak-setup.js",
+  "scripts": {
+    "setup": "node keycloak-setup.js",
+    "rollback": "node keycloak-rollback.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
+  }
+}
