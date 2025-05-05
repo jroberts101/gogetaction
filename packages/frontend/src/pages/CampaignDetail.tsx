@@ -22,10 +22,7 @@ const CampaignDetail = () => {
     // In a real app, we would fetch from an API
     if (campaignId) {
       const foundCampaign = mockCampaigns.find(c => c.id === campaignId);
-      // Fix: Filter the templates array instead of trying to access it as an object
-      const campaignTemplates = mockLetterTemplates.filter(
-        template => template.campaignId === campaignId
-      );
+      const campaignTemplates = mockLetterTemplates[campaignId] || [];
 
       setTimeout(() => {
         setCampaign(foundCampaign || null);

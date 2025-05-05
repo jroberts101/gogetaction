@@ -85,36 +85,32 @@
   body {
     @apply bg-campaign-background text-campaign-text font-sans;
     margin: 0;
-    font-family:
-      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-      'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-medium tracking-tight;
   }
-
+  
   h1 {
     @apply text-4xl sm:text-5xl;
   }
-
+  
   h2 {
     @apply text-3xl sm:text-4xl;
   }
-
+  
   h3 {
     @apply text-2xl sm:text-3xl;
   }
 
   code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
   }
 }
 
@@ -130,7 +126,7 @@
   .campaign-card {
     @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out overflow-hidden border border-gray-100;
   }
-
+  
   .campaign-form-input {
     @apply px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-campaign-accent/50 transition duration-200 ease-in-out w-full;
   }

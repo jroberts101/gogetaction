@@ -12,11 +12,12 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement;
 };
 
+// Define action types directly as a const type instead of a variable
 type ActionType = {
-  ADD_TOAST: 'ADD_TOAST';
-  UPDATE_TOAST: 'UPDATE_TOAST';
-  DISMISS_TOAST: 'DISMISS_TOAST';
-  REMOVE_TOAST: 'REMOVE_TOAST';
+  readonly ADD_TOAST: 'ADD_TOAST';
+  readonly UPDATE_TOAST: 'UPDATE_TOAST';
+  readonly DISMISS_TOAST: 'DISMISS_TOAST';
+  readonly REMOVE_TOAST: 'REMOVE_TOAST';
 };
 
 let count = 0;

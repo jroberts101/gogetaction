@@ -7,21 +7,21 @@ const TestimonialsSection = () => {
         'Our campaign to protect local parks gathered over 500 letter submissions in just two weeks. The city council took notice and halted the development plans.',
       author: 'Sarah Chen',
       role: 'Community Organizer',
-      image: '/uploads/GoGEtActionImage05.png',
+      image: '/lovable-uploads/9fcaf34d-6d18-4840-abd5-b56cf5eaf986.png',
     },
     {
       quote:
         'The letter templates made it easy for our supporters to send meaningful messages. We saw real results when over 200 personalized letters reached state representatives.',
       author: 'Marcus Johnson',
       role: 'Environmental Advocate',
-      image: '/uploads/GoGEtActionImage01.png',
+      image: '/lovable-uploads/6e0b4fb1-fe23-4dc6-a53a-6d75a74fbbc1.png',
     },
     {
       quote:
         'As a small non-profit, we struggled to make our voice heard. This platform changed everything by helping us coordinate an effective letter campaign with minimal overhead.',
       author: 'Elena Rodriguez',
       role: 'Non-profit Director',
-      image: '/uploads/GoGEtActionImage03.png',
+      image: '/lovable-uploads/85e867f9-8569-4700-b7a2-95ebe896951a.png',
     },
   ];
 
